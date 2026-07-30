@@ -154,6 +154,18 @@ AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'media')
 AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')
 
+AWS_QUERYSTRING_AUTH = False
+
+# Django 4.2+ Unified Storage Configuration
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 # This prevents Django from overwriting images if Leanard uploads two files with the same name
 AWS_S3_FILE_OVERWRITE = False 
 AWS_DEFAULT_ACL = 'public-read'
