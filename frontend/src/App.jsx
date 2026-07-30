@@ -5,7 +5,6 @@ import Catalog from "./pages/Catalog";
 import Quote from "./pages/Quote";
 import Gallery from "./pages/Gallery";
 import WhatsAppButton from "./components/WhatsAppButton";
-import { Menu, X } from "lucide-react"; // or swap for your icon lib of choice
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,93 +12,99 @@ function App() {
 
   return (
     <Router>
-      <div className="flex flex-col min-h-screen relative">
+      <div className="flex min-h-screen flex-col relative">
         {/* Navbar */}
-        <header className="bg-brand-blue text-white p-4 shadow-md sticky top-0 z-40">
-          <div className="container mx-auto flex justify-between items-center">
-            <Link
-              to="/"
-              onClick={closeMenu}
-              className="text-2xl font-bold tracking-tight hover:text-brand-accent transition-colors"
-            >
-              Just Roofing
-            </Link>
-
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center space-x-6 font-medium">
-              <Link
-                to="/"
-                className="hover:text-brand-accent transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                to="/catalog"
-                className="hover:text-brand-accent transition-colors"
-              >
-                Products
-              </Link>
-              <Link
-                to="/gallery"
-                className="hover:text-brand-accent transition-colors"
-              >
-                Gallery
-              </Link>
-              <Link
-                to="/quote"
-                className="bg-brand-accent hover:bg-yellow-600 px-4 py-2 rounded text-white transition-colors"
-              >
-                Get a Quote
-              </Link>
-            </nav>
-
-            {/* Mobile hamburger button */}
-            <button
-              className="md:hidden p-2 -mr-2"
-              onClick={() => setMenuOpen((prev) => !prev)}
-              aria-label="Toggle menu"
-              aria-expanded={menuOpen}
-            >
-              {menuOpen ? <X size={26} /> : <Menu size={26} />}
-            </button>
-          </div>
-
-          {/* Mobile nav panel */}
-          <div
-            className={`md:hidden overflow-hidden transition-all duration-300 ${
-              menuOpen ? "max-h-64 mt-4" : "max-h-0"
-            }`}
-          >
-            <nav className="flex flex-col space-y-3 font-medium pb-2">
+        <header className="sticky top-0 z-40 border-b border-white/10 bg-brand-blue text-white shadow-lg">
+          <div className="container mx-auto px-4 py-3 sm:px-6">
+            <div className="flex items-center justify-between gap-3">
               <Link
                 to="/"
                 onClick={closeMenu}
-                className="hover:text-brand-accent transition-colors"
+                className="text-xl font-bold tracking-tight transition-colors hover:text-brand-accent sm:text-2xl"
               >
-                Home
+                Just Roofing
               </Link>
-              <Link
-                to="/catalog"
-                onClick={closeMenu}
-                className="hover:text-brand-accent transition-colors"
+
+              {/* Desktop nav */}
+              <nav className="hidden items-center space-x-6 font-medium md:flex">
+                <Link
+                  to="/"
+                  className="transition-colors hover:text-brand-accent"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/catalog"
+                  className="transition-colors hover:text-brand-accent"
+                >
+                  Products
+                </Link>
+                <Link
+                  to="/gallery"
+                  className="transition-colors hover:text-brand-accent"
+                >
+                  Gallery
+                </Link>
+                <Link
+                  to="/quote"
+                  className="rounded bg-brand-accent px-4 py-2 text-white transition-colors hover:bg-yellow-600"
+                >
+                  Get a Quote
+                </Link>
+              </nav>
+
+              {/* Mobile hamburger button */}
+              <button
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 transition-colors hover:bg-white/20 md:hidden"
+                onClick={() => setMenuOpen((prev) => !prev)}
+                aria-label="Toggle menu"
+                aria-expanded={menuOpen}
               >
-                Products
-              </Link>
-              <Link
-                to="/gallery"
-                onClick={closeMenu}
-                className="hover:text-brand-accent transition-colors"
-              >
-                Gallery
-              </Link>
-              <Link
-                to="/quote"
-                onClick={closeMenu}
-                className="bg-brand-accent hover:bg-yellow-600 px-4 py-2 rounded text-white transition-colors inline-block w-fit"
-              >
-                Get a Quote
-              </Link>
-            </nav>
+                <span className="text-xl leading-none" aria-hidden="true">
+                  {menuOpen ? "✕" : "☰"}
+                </span>
+              </button>
+            </div>
+
+            {/* Mobile nav panel */}
+            <div
+              className={`overflow-hidden transition-all duration-300 md:hidden ${
+                menuOpen ? "mt-3 max-h-80 opacity-100" : "max-h-0 opacity-0"
+              }`}
+            >
+              <nav className="rounded-2xl border border-white/10 bg-white/10 p-3 backdrop-blur-sm">
+                <div className="flex flex-col space-y-2 font-medium">
+                  <Link
+                    to="/"
+                    onClick={closeMenu}
+                    className="rounded-lg px-3 py-3 transition-colors hover:bg-white/10 hover:text-brand-accent"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    to="/catalog"
+                    onClick={closeMenu}
+                    className="rounded-lg px-3 py-3 transition-colors hover:bg-white/10 hover:text-brand-accent"
+                  >
+                    Products
+                  </Link>
+                  <Link
+                    to="/gallery"
+                    onClick={closeMenu}
+                    className="rounded-lg px-3 py-3 transition-colors hover:bg-white/10 hover:text-brand-accent"
+                  >
+                    Gallery
+                  </Link>
+                  <Link
+                    to="/quote"
+                    onClick={closeMenu}
+                    className="mt-1 inline-flex rounded-lg bg-brand-accent px-3 py-3 text-white transition-colors hover:bg-yellow-600"
+                  >
+                    Get a Quote
+                  </Link>
+                </div>
+              </nav>
+            </div>
           </div>
         </header>
 
