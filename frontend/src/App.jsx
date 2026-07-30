@@ -1,43 +1,21 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import Catalog from "./pages/Catalog";
 import Quote from "./pages/Quote";
 import Gallery from "./pages/Gallery";
 import WhatsAppButton from "./components/WhatsAppButton";
-import { Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react"; // or swap for your icon lib of choice
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
-  const navRef = useRef(null);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (navRef.current && !navRef.current.contains(event.target)) {
-        setMenuOpen(false);
-      }
-    }
-
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("touchstart", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchstart", handleClickOutside);
-    };
-  }, [menuOpen]);
 
   return (
     <Router>
       <div className="flex flex-col min-h-screen relative">
         {/* Navbar */}
-        <header
-          ref={navRef}
-          className="bg-brand-blue text-white p-4 shadow-md sticky top-0 z-40"
-        >
+        <header className="bg-brand-blue text-white p-4 shadow-md sticky top-0 z-40">
           <div className="container mx-auto flex justify-between items-center">
             <Link
               to="/"
