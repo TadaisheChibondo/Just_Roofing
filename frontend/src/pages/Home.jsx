@@ -1,8 +1,48 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useInView,
+  animate,
+} from "framer-motion";
+import { ArrowRight, Clock, Phone, ChevronRight } from "lucide-react";
+
+// Custom Framer Motion Counter (Replaces react-countup)
+function AnimatedCounter({ end, duration = 3 }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (inView) {
+      const controls = animate(0, end, {
+        duration,
+        ease: "easeOut",
+        onUpdate(value) {
+          if (ref.current) {
+            ref.current.textContent = Math.round(value);
+          }
+        },
+      });
+      return () => controls.stop();
+    }
+  }, [inView, end, duration]);
+
+  return <span ref={ref}>0</span>;
+}
 
 export default function Home() {
-  // Array of high-quality roofing/construction placeholder images
+  const containerRef = useRef(null);
+
+  // Scroll progress indicator
+  const { scrollYProgress } = useScroll();
+
+  // Parallax for hero section
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 1000], [0, 300]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+
   const slides = [
     "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80",
@@ -11,7 +51,6 @@ export default function Home() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Auto-advance the slides every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -19,321 +58,386 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [slides.length]);
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2 },
+    },
+  };
+
   return (
-    <div className="w-full">
-      {/* 1. HERO SECTION (Full-Width Slideshow) */}
-      <section className="relative min-h-[560px] sm:min-h-[640px] lg:h-[85vh] lg:min-h-[600px] w-full flex items-center justify-center overflow-hidden px-2 sm:px-4">
-        {/* Background Images Mapping */}
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-            style={{ backgroundImage: `url('${slide}')` }}
-          ></div>
-        ))}
+    <div
+      className="relative w-full bg-zinc-950 font-sans selection:bg-brand-accent selection:text-white"
+      ref={containerRef}
+    >
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-brand-accent z-50 origin-left"
+        style={{ scaleX: scrollYProgress }}
+      />
 
-        {/* Dark Overlay - keeps text readable against any image */}
-        <div className="absolute inset-0 bg-black/65 z-10"></div>
-
-        {/* Text Content */}
-        <div className="relative z-20 text-center px-4 max-w-4xl mx-auto mt-8 sm:mt-16">
-          <p className="text-brand-accent font-bold tracking-widest uppercase mb-3 sm:mb-4 text-sm sm:text-base animate-pulse">
-            Honest and reliable since 2024
-          </p>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 sm:mb-8 leading-tight drop-shadow-lg">
-            Protecting Your Assets with Premium Roofing
-          </h1>
-          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-            <Link
-              to="/gallery"
-              className="w-full sm:w-auto bg-brand-blue hover:bg-blue-800 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded transition-colors text-base sm:text-lg shadow-lg"
-            >
-              View Projects
-            </Link>
-            <Link
-              to="/quote"
-              className="w-full sm:w-auto bg-brand-accent hover:bg-yellow-600 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded transition-colors text-base sm:text-lg shadow-lg"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. ROOFING IS WHAT WE DO SECTION */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row items-center gap-12">
-          <div className="w-full lg:w-1/2">
-            <h4 className="text-brand-accent font-bold uppercase tracking-wider mb-2">
-              Roofing is what we do
-            </h4>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4 sm:mb-6 leading-tight">
-              Just Roofing Is Leading Quality Projects
-            </h2>
-            <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6">
-              When you choose Just Roofing, you are investing in peace of mind.
-              A failing roof disrupts your business and endangers your home. Our
-              expertly crafted roofing solutions eliminate leaks, improve
-              property insulation, and drastically boost your property value.
-            </p>
-            <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-              We focus on delivering structural integrity so you never have to
-              worry about the next storm. Your safety and satisfaction are built
-              into every sheet we lay.
-            </p>
-          </div>
-          <div className="w-full lg:w-1/2">
-            <img
-              src="/images/roof1.png"
-              alt="Quality Finished Roof"
-              className="rounded-lg shadow-xl w-full h-[280px] sm:h-[360px] lg:h-[400px] object-cover"
+      <section className="sticky top-0 z-0 h-screen w-full overflow-hidden bg-zinc-900 flex flex-col justify-center">
+        <motion.div style={{ y: heroY, opacity }} className="absolute inset-0">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
+                index === currentSlide ? "opacity-100" : "opacity-0"
+              }`}
+              style={{ backgroundImage: `url('${slide}')` }}
             />
-          </div>
+          ))}
+          <div className="absolute inset-0 bg-zinc-950/70 z-10" />
+          <div className="absolute inset-0 bg-[url('/blueprint-grid.svg')] opacity-5 z-10 mix-blend-overlay" />
+        </motion.div>
+
+        <div className="relative z-20 px-6 max-w-7xl mx-auto w-full">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="max-w-4xl"
+          >
+            <motion.p
+              variants={fadeUp}
+              className="text-brand-accent font-black tracking-[0.2em] uppercase mb-6 text-sm sm:text-base flex items-center gap-4"
+            >
+              <span className="w-12 h-[2px] bg-brand-accent"></span>
+              Honest and reliable since 2024
+            </motion.p>
+
+            <motion.h1
+              variants={fadeUp}
+              className="text-6xl sm:text-8xl md:text-[7rem] font-black text-white mb-8 leading-[0.85] tracking-tighter uppercase font-oswald"
+            >
+              Roofing <br />
+              <span className="text-transparent border-text stroke-white text-outline">
+                That Lasts.
+              </span>
+            </motion.h1>
+
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-col sm:flex-row gap-6 items-start mt-12"
+            >
+              <Link
+                to="/quote"
+                className="group relative bg-brand-accent text-zinc-950 font-black uppercase tracking-wider py-5 px-10 overflow-hidden shadow-[8px_8px_0px_#fff] hover:shadow-[4px_4px_0px_#fff] hover:translate-y-1 hover:translate-x-1 transition-all duration-300 flex items-center gap-3"
+              >
+                <span className="relative z-10">Request Quote</span>
+                <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-2 transition-transform" />
+                <div className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out z-0"></div>
+              </Link>
+
+              <div className="flex items-center gap-3 text-zinc-300">
+                <Clock className="w-5 h-5 text-brand-accent" />
+                <p className="text-sm font-medium">
+                  Average response <br />
+                  <span className="text-white font-bold">
+                    within 30 minutes
+                  </span>
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* 3. ORDERING & LOGISTICS SECTION */}
-      <section className="py-12 sm:py-16 px-4 max-w-7xl mx-auto mb-10">
-        <div className="flex flex-col lg:flex-row items-center gap-12">
-          <div className="w-full lg:w-1/2 order-2 lg:order-1">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4 sm:mb-6">
-              Seamless Ordering & Rapid Delivery
-            </h2>
-            <div className="space-y-6">
-              <div className="bg-gray-50 p-5 sm:p-6 rounded-lg border-l-4 border-brand-blue">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  1. Placing Your Order
-                </h3>
-                <p className="text-gray-600">
-                  Browse our online catalog, select your materials, and request
-                  a quote. Our sales team will confirm availability and pricing
-                  instantly via WhatsApp.
+      <section className="sticky top-0 z-10 min-h-screen bg-gradient-to-br from-white to-slate-100 pt-24 pb-32 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none mix-blend-multiply"></div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="flex flex-col lg:flex-row gap-16 items-center"
+          >
+            <div className="w-full lg:w-5/12">
+              <motion.h4
+                variants={fadeUp}
+                className="text-brand-blue font-black uppercase tracking-widest mb-4 flex items-center gap-3"
+              >
+                <span className="w-8 h-[2px] bg-brand-blue"></span> Roofing is
+                what we do
+              </motion.h4>
+              <motion.h2
+                variants={fadeUp}
+                className="text-5xl sm:text-7xl font-black text-zinc-950 mb-8 leading-[0.9] tracking-tight uppercase"
+              >
+                Leading <br />
+                Quality <br />
+                Projects.
+              </motion.h2>
+              <motion.p
+                variants={fadeUp}
+                className="text-zinc-600 text-lg leading-relaxed mb-6 font-medium"
+              >
+                When you choose Just Roofing, you are investing in peace of
+                mind. A failing roof disrupts your business and endangers your
+                home.
+              </motion.p>
+              <motion.p
+                variants={fadeUp}
+                className="text-zinc-500 leading-relaxed mb-8"
+              >
+                We focus on delivering structural integrity so you never have to
+                worry about the next storm. Your safety and satisfaction are
+                built into every sheet we lay.
+              </motion.p>
+            </div>
+
+            <div className="w-full lg:w-7/12 relative">
+              <motion.div
+                variants={fadeUp}
+                className="relative z-10 bg-white p-4 border-2 border-zinc-900 shadow-[16px_16px_0px_#18181b]"
+              >
+                <div className="overflow-hidden group relative">
+                  <img
+                    src="/images/roof1.png"
+                    alt="Quality Finished Roof"
+                    className="w-full h-[500px] object-cover group-hover:scale-105 group-hover:rotate-1 transition-transform duration-700 ease-out grayscale-[20%] group-hover:grayscale-0"
+                  />
+                  <div className="absolute inset-0 bg-brand-blue/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center">
+                    <span className="text-white font-black tracking-widest uppercase mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      View Details
+                    </span>
+                    <ArrowRight className="text-brand-accent w-8 h-8 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-500 delay-100" />
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 }}
+                className="absolute -bottom-10 -left-10 bg-brand-accent text-zinc-950 p-8 border-2 border-zinc-900 shadow-[8px_8px_0px_#18181b] z-20"
+              >
+                <p className="font-black text-4xl mb-1 uppercase tracking-tighter">
+                  Zero
                 </p>
-              </div>
-              <div className="bg-gray-50 p-5 sm:p-6 rounded-lg border-l-4 border-brand-accent">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  2. Delivery Time
-                </h3>
-                <p className="text-gray-600">
-                  Once confirmed, supply-only orders are typically dispatched
-                  and delivered to your site within 24 to 48 hours.
+                <p className="text-sm font-bold uppercase tracking-widest">
+                  Compromises
                 </p>
-              </div>
-              <div className="bg-gray-50 p-5 sm:p-6 rounded-lg border-l-4 border-gray-800">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  3. Installation Timeline
-                </h3>
-                <p className="text-gray-600">
-                  For "Fix and Supply" projects, an average residential roof
-                  takes our professional team 3 to 7 days to complete, ensuring
-                  zero disruption to your daily life.
-                </p>
-              </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="sticky top-0 z-20 min-h-screen bg-brand-blue text-white pt-24 pb-32 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, #000 0, #000 2px, transparent 2px, transparent 20px)",
+          }}
+        ></div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="text-center mb-24"
+          >
+            <motion.h2
+              variants={fadeUp}
+              className="text-5xl md:text-7xl font-black uppercase tracking-tight mb-6"
+            >
+              Seamless Ordering <br />
+              <span className="text-brand-accent">Rapid Delivery</span>
+            </motion.h2>
+          </motion.div>
+
+          <div className="relative">
+            <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/20 hidden lg:block -translate-y-1/2">
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, ease: "easeInOut" }}
+                className="h-full bg-brand-accent origin-left"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 relative z-10">
+              {[
+                {
+                  step: "01",
+                  title: "Placing Order",
+                  desc: "Select materials & request a quote. Confirmed instantly via WhatsApp.",
+                },
+                {
+                  step: "02",
+                  title: "Delivery",
+                  desc: "Supply-only orders dispatched and delivered to your site within 24–48 hours.",
+                },
+                {
+                  step: "03",
+                  title: "Installation",
+                  desc: "Average residential roof takes 3-7 days to complete with zero disruption.",
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  variants={fadeUp}
+                  className="relative group bg-zinc-900 border-2 border-white/10 p-8 shadow-[8px_8px_0px_rgba(255,255,255,0.1)] hover:shadow-[12px_12px_0px_#EAB308] hover:border-brand-accent transition-all duration-300"
+                >
+                  <div className="absolute -top-6 -left-6 w-16 h-16 bg-brand-accent flex items-center justify-center border-2 border-zinc-900 font-black text-2xl text-zinc-900 group-hover:rotate-12 transition-transform">
+                    {item.step}
+                  </div>
+                  <h3 className="text-2xl font-black uppercase tracking-wide mt-6 mb-4">
+                    {item.title}
+                  </h3>
+                  <p className="text-zinc-400 font-medium leading-relaxed">
+                    {item.desc}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
-          <div className="w-full lg:w-1/2 order-1 lg:order-2">
-            <img
-              src="/images/roof5.jpeg"
-              alt="Roofing Materials"
-              className="rounded-lg shadow-xl w-full h-[280px] sm:h-[360px] lg:h-[500px] object-cover"
-            />
-          </div>
         </div>
       </section>
 
-      {/* 4. WHO WE ARE (Full Width Background) */}
-      <section
-        className="relative py-16 sm:py-24 bg-cover bg-fixed bg-center w-full"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1504307651254-35680f35aa9e?auto=format&fit=crop&q=80')",
-        }}
-      >
-        <div className="absolute inset-0 bg-brand-blue/90 z-0"></div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-12 mb-16">
-            <div className="lg:w-1/3">
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-                Who We Are
-                <br />& About Our Company
-              </h2>
-            </div>
-            <div className="lg:w-2/3">
-              <p className="text-blue-100 text-base sm:text-lg leading-relaxed">
+      <section className="sticky top-0 z-30 min-h-screen bg-zinc-950 pt-24 pb-32 rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row gap-16 mb-24">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+              className="lg:w-1/2"
+            >
+              <motion.h2
+                variants={fadeUp}
+                className="text-5xl md:text-7xl font-black text-white uppercase tracking-tight mb-8"
+              >
+                Who We Are.
+              </motion.h2>
+              <motion.p
+                variants={fadeUp}
+                className="text-zinc-400 text-xl leading-relaxed font-medium"
+              >
                 Just Roofing Pvt Ltd was founded on a simple principle: every
                 building deserves a shield that lasts a lifetime. We are a
-                dedicated team of suppliers, engineers, and craftsmen who take
-                pride in elevating the standard of construction in Zimbabwe. We
-                don't just sell steel and wire; we provide security for your
-                family and your investments.
-              </p>
+                dedicated team of suppliers, engineers, and craftsmen.
+              </motion.p>
+
+              <motion.div
+                variants={fadeUp}
+                className="mt-12 flex items-center gap-6"
+              >
+                <div className="w-16 h-16 bg-zinc-800 rounded-full overflow-hidden border-2 border-brand-accent grayscale">
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80"
+                    alt="Leanard Teya"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-white uppercase tracking-wider">
+                    Leanard Teya
+                  </h3>
+                  <p className="text-brand-accent font-bold uppercase tracking-widest text-sm">
+                    Chief Executive Officer
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            <div className="lg:w-1/2 grid grid-cols-2 gap-6">
+              {[
+                { end: 2024, label: "Year Est", prefix: "" },
+                { end: 150, label: "Projects", prefix: "+" },
+                { end: 24, label: "Professionals", prefix: "" },
+                { end: 5, label: "Partners", prefix: "" },
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-zinc-900 border border-zinc-800 p-8 flex flex-col justify-center"
+                >
+                  <h4 className="text-5xl md:text-6xl font-black text-white mb-2 flex items-baseline">
+                    <AnimatedCounter end={stat.end} />
+                    <span className="text-brand-accent text-4xl">
+                      {stat.prefix}
+                    </span>
+                  </h4>
+                  <p className="text-zinc-500 font-bold uppercase tracking-widest text-sm">
+                    {stat.label}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
 
-          <div className="text-center mb-12">
-            <h3 className="text-2xl font-bold text-brand-accent">
-              Leanard Teya
-            </h3>
-            <p className="text-blue-200">Chief Executive Officer</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            <div className="bg-white/10 border border-white/20 p-6 sm:p-8 rounded-lg text-center backdrop-blur-sm">
-              <h4 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">
-                2024
-              </h4>
-              <p className="text-brand-accent font-semibold uppercase tracking-wider text-sm">
-                Year Established
-              </p>
-            </div>
-            <div className="bg-white/10 border border-white/20 p-6 sm:p-8 rounded-lg text-center backdrop-blur-sm">
-              <h4 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">
-                150+
-              </h4>
-              <p className="text-brand-accent font-semibold uppercase tracking-wider text-sm">
-                Projects Completed
-              </p>
-            </div>
-            <div className="bg-white/10 border border-white/20 p-6 sm:p-8 rounded-lg text-center backdrop-blur-sm">
-              <h4 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">
-                24
-              </h4>
-              <p className="text-brand-accent font-semibold uppercase tracking-wider text-sm">
-                Professional Employees
-              </p>
-            </div>
-            <div className="bg-white/10 border border-white/20 p-6 sm:p-8 rounded-lg text-center backdrop-blur-sm">
-              <h4 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">
-                5
-              </h4>
-              <p className="text-brand-accent font-semibold uppercase tracking-wider text-sm">
-                Business Partners
-              </p>
+          <div className="border-y border-zinc-800 py-8 overflow-hidden relative">
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-zinc-950 to-transparent z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-zinc-950 to-transparent z-10"></div>
+            <div className="flex space-x-16 animate-[marquee_30s_linear_infinite] whitespace-nowrap opacity-30">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex space-x-16 items-center">
+                  <span className="text-3xl font-black text-white uppercase tracking-widest">
+                    City Builders
+                  </span>
+                  <span className="text-3xl font-black text-white uppercase tracking-widest">
+                    Harare Homes
+                  </span>
+                  <span className="text-3xl font-black text-white uppercase tracking-widest">
+                    Zim Warehousing
+                  </span>
+                  <span className="text-3xl font-black text-white uppercase tracking-widest">
+                    Elite Contractors
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* 5. OUR SERVICES */}
-      <section className="py-14 sm:py-20 bg-gray-50 px-4 w-full">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-              Our Services
+      <section className="relative z-40 bg-brand-accent text-zinc-950 py-24">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-5xl font-black uppercase tracking-tighter mb-6">
+              Ready to secure <br />
+              your investment?
             </h2>
-            <div className="w-24 h-1 bg-brand-accent mx-auto"></div>
+            <div className="flex items-center gap-8">
+              <div>
+                <p className="font-bold uppercase tracking-wider text-zinc-800 mb-1">
+                  Call Us Now
+                </p>
+                <p className="text-2xl font-black flex items-center gap-3">
+                  <Phone className="w-6 h-6 fill-zinc-950" /> 071 278 9951
+                </p>
+              </div>
+            </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="flex md:justify-end">
             <Link
               to="/quote"
-              className="bg-white p-6 sm:p-10 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-2 transition-all group cursor-pointer border-b-4 border-brand-blue"
-            >
-              <h3 className="text-2xl font-bold text-brand-blue group-hover:text-brand-accent transition-colors mb-4">
-                Fix and Supply Installation
-              </h3>
-              <p className="text-gray-600">
-                Complete end-to-end roofing solutions including timber
-                framework, insulation, and final sheet installation by our
-                expert team.
-              </p>
-            </Link>
-
-            <Link
-              to="/catalog"
-              className="bg-white p-6 sm:p-10 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-2 transition-all group cursor-pointer border-b-4 border-brand-accent"
-            >
-              <h3 className="text-2xl font-bold text-brand-blue group-hover:text-brand-accent transition-colors mb-4">
-                Materials Supply
-              </h3>
-              <p className="text-gray-600">
-                Wholesale and retail supply of IBR, corrugated sheets,
-                Alububble, and fencing wire delivered directly to your site.
-              </p>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. OUR PROJECTS (Preview) */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-            Our Projects
-          </h2>
-          <div className="w-24 h-1 bg-brand-blue mx-auto"></div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <img
-            src="/images/roof2.png"
-            alt="Project 1"
-            className="w-full h-64 object-cover rounded shadow-md"
-          />
-          <img
-            src="/images/roof3.png"
-            alt="Project 2"
-            className="w-full h-64 object-cover rounded shadow-md"
-          />
-          <img
-            src="/images/roof4.png"
-            alt="Project 3"
-            className="w-full h-64 object-cover rounded shadow-md"
-          />
-        </div>
-        <div className="text-center">
-          <Link
-            to="/gallery"
-            className="inline-block border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white font-bold py-3 px-8 rounded transition-colors"
-          >
-            View All Projects
-          </Link>
-        </div>
-      </section>
-
-      {/* 7. OUR CLIENTS */}
-      <section className="py-10 sm:py-12 bg-gray-200 px-4 w-full">
-        <div className="max-w-7xl mx-auto text-center">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-700 mb-6 sm:mb-8">
-            Trusted by contractors and homeowners across Zimbabwe
-          </h3>
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-12 opacity-50 grayscale">
-            <span className="text-xl font-black">CITY BUILDERS</span>
-            <span className="text-xl font-black">HARARE HOMES</span>
-            <span className="text-xl font-black">ZIM WAREHOUSING</span>
-            <span className="text-xl font-black">ELITE CONTRACTORS</span>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. CONTACT DETAILS PRE-FOOTER */}
-      <section className="bg-brand-blue text-white py-12 sm:py-16 px-4 w-full">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          <div>
-            <h4 className="text-xl font-bold text-brand-accent mb-4">
-              Location
-            </h4>
-            <p className="text-blue-100">
-              123 Industrial Road
-              <br />
-              Harare, Zimbabwe
-            </p>
-          </div>
-          <div>
-            <h4 className="text-xl font-bold text-brand-accent mb-4">
-              Contact Us
-            </h4>
-            <p className="text-blue-100 mb-2">Phone/WhatsApp: 071 278 9951</p>
-            <p className="text-blue-100">Email: leanardteya@gmail.com</p>
-          </div>
-          <div className="flex flex-col items-center md:items-end justify-center">
-            <Link
-              to="/quote"
-              className="w-full sm:w-auto bg-brand-accent hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded transition-colors shadow-lg"
+              className="bg-zinc-950 text-white font-black uppercase tracking-wider py-6 px-12 shadow-[8px_8px_0px_#fff] hover:shadow-[4px_4px_0px_#fff] hover:translate-y-1 hover:translate-x-1 transition-all duration-300 flex items-center gap-4 text-xl"
             >
               Request a Call Back
+              <ChevronRight className="w-6 h-6" />
             </Link>
           </div>
         </div>
