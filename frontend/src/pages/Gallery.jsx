@@ -7,7 +7,7 @@ export default function Gallery() {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/portfolio/")
+      .get(`${import.meta.env.VITE_API_URL}/api/portfolio/`)
       .then((response) => {
         setProjects(response.data);
         setLoading(false);

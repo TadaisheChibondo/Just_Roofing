@@ -10,7 +10,7 @@ export default function Catalog() {
   // 2. Fetch the data when the component mounts
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/api/products/")
+      .get(`${import.meta.env.VITE_API_URL}/api/products/`)
       .then((response) => {
         setProducts(response.data);
         setLoading(false);
