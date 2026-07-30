@@ -75,8 +75,8 @@ function Grain() {
 export default function Home() {
   const slides = [
     "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&q=80",
-    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80",
-    "/images/roof6.jpeg",
+    "/images/roof4.jpeg",
+    "/images/roof5.jpeg",
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -412,7 +412,7 @@ export default function Home() {
             >
               <div className="overflow-hidden rounded-lg shadow-xl group">
                 <img
-                  src="/images/roof5.jpeg"
+                  src="/images/roof6.jpeg"
                   alt="Roofing Materials"
                   className="w-full h-[280px] sm:h-[360px] lg:h-[520px] object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
