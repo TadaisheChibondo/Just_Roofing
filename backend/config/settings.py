@@ -89,6 +89,10 @@ DATABASES = {
         conn_max_age=600
     )
 }
+# DATABASES = {
+#     'default': dj_database_url.parse('postgresql://just_roofing_db_user:Gprkyd9DKvFLY4bUMKVHZxH7qZfk55Uv@dpg-d9lit9vavr4c7396tvq0-a.ohio-postgres.render.com/just_roofing_db')
+# }
+
 
 
 # Password validation
