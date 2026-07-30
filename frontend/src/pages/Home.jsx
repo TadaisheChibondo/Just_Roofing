@@ -74,8 +74,8 @@ function Grain() {
 
 export default function Home() {
   const slides = [
-    "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&q=80",
-    "/images/roof4.jpeg",
+    "/images/roof4.png",
+    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80",
     "/images/roof5.jpeg",
   ];
 
