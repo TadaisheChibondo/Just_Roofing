@@ -72,6 +72,65 @@ function Grain() {
   );
 }
 
+// Floating, always-reachable CTA that appears once the visitor scrolls
+// past the hero and stays pinned to the viewport for the rest of the page.
+function FloatingProductsCTA() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Reveal once they've scrolled past most of the hero
+      setVisible(window.scrollY > window.innerHeight * 0.6);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    // Outer element owns the fixed positioning + vertical centering.
+    // Inner motion.div owns the slide/fade animation, so the two
+    // transforms (translate-y-1/2 vs. the animated y) don't fight.
+    <div className="fixed top-1/2 -translate-y-1/2 right-4 sm:right-8 z-[70]">
+      <motion.div
+        initial={false}
+        animate={
+          visible
+            ? { opacity: 1, x: 0, scale: 1, pointerEvents: "auto" }
+            : { opacity: 0, x: 30, scale: 0.9, pointerEvents: "none" }
+        }
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Link
+          to="/catalog"
+          className="group relative flex items-center gap-2.5 bg-brand-accent hover:bg-yellow-600 text-white font-bold pl-5 pr-6 py-3.5 sm:py-4 rounded-full shadow-2xl transition-colors"
+        >
+          {/* subtle pulse ring to draw the eye without being annoying */}
+          <span className="absolute inset-0 rounded-full bg-brand-accent motion-safe:animate-ping opacity-25" />
+
+          <svg
+            className="relative w-5 h-5 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 8L12 3 3 8m18 0l-9 5m9-5v10l-9 5m0-10L3 8m9 5v10M3 8v10l9 5"
+            />
+          </svg>
+
+          <span className="relative text-sm sm:text-base uppercase tracking-wide whitespace-nowrap">
+            Browse Products
+          </span>
+        </Link>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function Home() {
   const slides = [
     "/images/roof4.png",
@@ -125,6 +184,9 @@ export default function Home() {
 
   return (
     <div className="w-full bg-white font-sans">
+      {/* FLOATING PRODUCTS CTA — always reachable while scrolling */}
+      <FloatingProductsCTA />
+
       {/* SCROLL PROGRESS BAR */}
       <motion.div
         style={{ scaleX: barScale }}
