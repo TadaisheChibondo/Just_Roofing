@@ -148,13 +148,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if not DEBUG:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Supabase S3 Storage Configuration
+# Supabase S3 Credentials
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'media')
 AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')
-
 AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+
+# Force Django to use the Supabase public URL endpoint
+AWS_S3_CUSTOM_DOMAIN = f"oqoqdjpdggrqbavfjrpx.supabase.co/storage/v1/object/public/{AWS_STORAGE_BUCKET_NAME}"
 
 # Django 4.2+ Unified Storage Configuration
 STORAGES = {
