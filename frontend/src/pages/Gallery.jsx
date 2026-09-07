@@ -1,30 +1,8 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { galleryData } from "../data";
 
 export default function Gallery() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}api/portfolio/`)
-      .then((response) => {
-        setProjects(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching portfolio:", error);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="text-center mt-20 text-brand-blue animate-pulse">
-        Loading gallery...
-      </div>
-    );
-  }
+  // 1. Load the static portfolio data directly
+  const projects = galleryData;
 
   return (
     <div className="py-8">

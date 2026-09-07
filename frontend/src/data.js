@@ -1,0 +1,157 @@
+export const catalogData = [
+  {
+    id: 1,
+    name: "IBR galvanized Wire",
+    specification: "0.23mm x 3.6m",
+    price: "6",
+    image: "/images/1.jpeg",
+  },
+  {
+    id: 2,
+    name: "Galvanized wire ",
+    specification: "2.0mm | 2.5 mm",
+    price: "70",
+    image: "/images/2.jpeg",
+  },
+  {
+    id: 3,
+    name: "Boxed Mesh",
+    specification: "50x50 ",
+    price: "$5/ m",
+    image: "/images/3.jpeg",
+  },
+  {
+    id: 4,
+    name: "Game Fence",
+    specification: "1.5mx100m",
+    price: "$85.00",
+    image: "/images/4.jpeg",
+  },
+  {
+    id: 5,
+    name: "Barbed Wire",
+    specification: "800m x 50kg",
+    price: "70.00",
+    image: "/images/5.jpeg",
+  },
+  {
+    id: 6,
+    name: "Superwood ",
+    price: "45.00",
+    image: "/images/6.jpeg",
+  },
+  {
+    id: 7,
+    name: "Black Wire",
+    specification: "1.6mm",
+    price: "70.00/ 50kg",
+    image: "/images/7.jpeg",
+  },
+  {
+    id: 8,
+    name: "Razor Wire",
+    specification: "10m",
+    price: "15.00",
+    image: "/images/8.jpeg",
+  },
+  {
+    id: 9,
+    name: "Safetop Nails",
+    specification: "boxes and per kg",
+    price: "20/box and $4 /kg",
+    image: "/images/9.jpeg",
+  },
+  {
+    id: 10,
+    name: "ibr ",
+    specification: "0.23mm",
+    price: "$6 wholesale and $6.50 single",
+    image: "/images/10.jpeg",
+  },
+  {
+    id: 11,
+    name: "Steel door Panels",
+    price: "$16",
+    image: "/images/11.jpeg",
+  },
+  {
+    id: 12,
+    name: "Hr sheets ",
+    specification: "2459*1225*1.6mm",
+    price: "43.00",
+    image: "/images/12.jpeg",
+  },
+  {
+    id: 13,
+    name: "Boxed Mesh",
+    specification: "50*24*1.6mm",
+    price: "30.00",
+    image: "/images/13.jpeg",
+  },
+  {
+    id: 14,
+    name: "Bullnose",
+    specification: "1.2mm and 1.8mm",
+    price: "$6 and $12",
+    image: "/images/14.jpeg",
+  },
+  {
+    id: 15,
+    name: "Cranked Ridges",
+    specification: "0.4mm",
+    price: "$5.00",
+    image: "/images/15.jpeg",
+  },
+  {
+    id: 16,
+    name: "Qtiles",
+    specification: "0.4mm",
+    price: "$6.00/m",
+    image: "/images/16.jpeg",
+  },
+  {
+    id: 17,
+    name: "Corrugated Galv",
+    specification: "3.5m",
+    price: "$6",
+    image: "/images/17.jpeg",
+  },
+  {
+    id: 18,
+    name: "ibr",
+    specification: "0.3mm",
+    price: "$12 or $4 per m",
+    image: "/images/18.jpeg",
+  },
+  {
+    id: 19,
+    name: "ibr",
+    specification: "0.4mm",
+    price: "$16 per 3.6m or $4.80 per m",
+    image: "/images/19.jpeg",
+  },
+  {
+    id: 20,
+    name: "ibr",
+    specification: "0.25mm",
+    price: "$9 or $3.50 per m",
+    image: "/images/20.jpeg",
+  },
+];
+
+export const galleryData = [
+  {
+    id: 1,
+    title: "Residential Chromadek Installation",
+    description: "Complete roof replacement in Harare northern suburbs.",
+    image: "/images/portfolio-1.jpg", // Make sure this image is in public/images/
+  },
+  {
+    id: 2,
+    title: "Commercial IBR Roofing",
+    description: "New warehouse complex roofing and guttering system.",
+    image: "/images/portfolio-2.jpg",
+  },
+  // Add as many static portfolio items as Leanard gave you
+];
+j;

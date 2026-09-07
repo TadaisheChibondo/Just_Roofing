@@ -1,47 +1,10 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { catalogData } from "../data"; // Adjust this path if your data.js is in a different folder
 
 export default function Catalog() {
-  // 1. Set up state for products, loading status, and errors
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // 1. Assign static data directly instead of using state
+  const products = catalogData;
 
-  // 2. Fetch the data when the component mounts
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}api/products/`)
-      .then((response) => {
-        setProducts(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-        setError(
-          "Failed to load catalog. Please ensure the server is running.",
-        );
-        setLoading(false);
-      });
-  }, []);
-
-  // 3. Handle Loading and Error States
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-xl font-semibold text-brand-blue animate-pulse">
-          Loading inventory...
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-center mt-10 text-red-600 font-medium">{error}</div>
-    );
-  }
-
-  // 4. Render the Product Grid
+  // 2. Render the Product Grid
   return (
     <div className="py-8">
       <h2 className="text-3xl font-bold text-brand-blue mb-8 text-center">
