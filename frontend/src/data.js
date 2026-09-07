@@ -139,19 +139,17 @@ export const catalogData = [
   },
 ];
 
-// export const galleryData = [
-//   {
-//     id: 1,
-//     title: "Residential Chromadek Installation",
-//     description: "Complete roof replacement in Harare northern suburbs.",
-//     image: "/images/portfolio-1.jpg", // Make sure this image is in public/images/
-//   },
-//   {
-//     id: 2,
-//     title: "Commercial IBR Roofing",
-//     description: "New warehouse complex roofing and guttering system.",
-//     image: "/images/portfolio-2.jpg",
-//   },
-//   // Add as many static portfolio items as Leanard gave you
-// ];
-//checking error
+export const galleryData = [
+  {
+    id: 1,
+    title: "Residential Chromadek Installation",
+    description: "Complete roof replacement in Harare northern suburbs.",
+    image: "/images/portfolio-1.jpg",
+  },
+  {
+    id: 2,
+    title: "Commercial IBR Roofing",
+    description: "New warehouse complex roofing and guttering system.",
+    image: "/images/portfolio-2.jpg",
+  },
+];
