@@ -5,10 +5,12 @@ import Catalog from "./pages/Catalog";
 import Quote from "./pages/Quote";
 import Gallery from "./pages/Gallery";
 import WhatsAppButton from "./components/WhatsAppButton";
+import { CartProvider, useCart } from "./CartContext";
 
-function App() {
+function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
+  const { cartCount } = useCart();
 
   return (
     <Router>
@@ -47,9 +49,14 @@ function App() {
                 </Link>
                 <Link
                   to="/quote"
-                  className="rounded bg-brand-accent px-4 py-2 text-white transition-colors hover:bg-yellow-600"
+                  className="relative rounded bg-brand-accent px-4 py-2 text-white transition-colors hover:bg-yellow-600"
                 >
                   Get a Quote
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-brand-blue text-xs font-bold text-white ring-2 ring-white">
+                      {cartCount}
+                    </span>
+                  )}
                 </Link>
               </nav>
 
@@ -98,9 +105,14 @@ function App() {
                   <Link
                     to="/quote"
                     onClick={closeMenu}
-                    className="mt-1 inline-flex rounded-lg bg-brand-accent px-3 py-3 text-white transition-colors hover:bg-yellow-600"
+                    className="mt-1 inline-flex items-center gap-2 rounded-lg bg-brand-accent px-3 py-3 text-white transition-colors hover:bg-yellow-600"
                   >
                     Get a Quote
+                    {cartCount > 0 && (
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-blue text-xs font-bold text-white">
+                        {cartCount}
+                      </span>
+                    )}
                   </Link>
                 </div>
               </nav>
@@ -132,6 +144,14 @@ function App() {
         </footer>
       </div>
     </Router>
+  );
+}
+
+function App() {
+  return (
+    <CartProvider>
+      <AppShell />
+    </CartProvider>
   );
 }
 
