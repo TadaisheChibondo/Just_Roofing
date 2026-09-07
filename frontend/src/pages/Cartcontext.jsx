@@ -91,3 +91,4 @@ export function useCart() {
   }
   return context;
 }
+//corrected spelling
