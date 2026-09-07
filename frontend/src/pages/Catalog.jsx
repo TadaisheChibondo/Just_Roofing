@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { catalogData } from "../data"; // Adjust this path if your data.js is in a different folder
 import { useCart } from "../CartContext"; // Adjust this path to wherever you place CartContext.jsx
 
@@ -118,6 +119,15 @@ export default function Catalog() {
             </div>
           );
         })}
+      </div>
+
+      <div className="mt-10 flex justify-center">
+        <Link
+          to="/quote"
+          className="bg-brand-accent hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded transition-colors"
+        >
+          View Cart
+        </Link>
       </div>
 
       {/* Lightbox Modal for viewing the full product image */}
