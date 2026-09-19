@@ -25,14 +25,14 @@ export const catalogData = [
     name: "Game Fence",
     specification: "1.5mx100m",
     price: "$85.00",
-    image: "/images/4.jpeg",
+    image: "/images/8.jpeg",
   },
   {
     id: 6,
     name: "Barbed Wire",
     specification: "800m x 50kg",
     price: "70.00",
-    image: "/images/4.jpeg",
+    image: "/images/9.jpeg",
   },
   {
     id: 6,
@@ -66,13 +66,13 @@ export const catalogData = [
     name: "ibr ",
     specification: "0.23mm",
     price: "$6 wholesale and $6.50 single",
-    image: "/images/10.jpeg",
+    image: "/images/1.jpeg",
   },
   {
     id: 11,
     name: "Steel door Panels",
     price: "16",
-    image: "/images/12.jpeg",
+    image: "/images/11.jpeg",
   },
   {
     id: 13,
