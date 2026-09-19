@@ -66,7 +66,7 @@ export const catalogData = [
     name: "ibr ",
     specification: "0.23mm",
     price: "$6 wholesale and $6.50 single",
-    image: "/images/11.jpeg",
+    image: "/images/10.jpeg",
   },
   {
     id: 12,
