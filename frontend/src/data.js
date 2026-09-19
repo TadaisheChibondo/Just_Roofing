@@ -1,7 +1,7 @@
 export const catalogData = [
   {
     id: 2,
-    name: "IBR galvanized Wire",
+    name: "galvanized Wire",
     specification: "0.23mm x 3.6m",
     price: "6",
     image: "/images/2.jpeg",
@@ -11,34 +11,34 @@ export const catalogData = [
     name: "Galvanized wire ",
     specification: "2.0mm | 2.5 mm",
     price: "70",
-    image: "/images/3.jpeg",
+    image: "/images/4.jpeg",
   },
   {
     id: 4,
     name: "Boxed Mesh",
     specification: "50x50 ",
     price: "$5/ m",
-    image: "/images/4.jpeg",
+    image: "/images/5.jpeg",
   },
   {
     id: 5,
     name: "Game Fence",
     specification: "1.5mx100m",
     price: "$85.00",
-    image: "/images/5.jpeg",
+    image: "/images/6.jpeg",
   },
   {
     id: 6,
     name: "Barbed Wire",
     specification: "800m x 50kg",
     price: "70.00",
-    image: "/images/6.jpeg",
+    image: "/images/7.jpeg",
   },
   {
     id: 6,
     name: "Superwood ",
     price: "45.00",
-    image: "/images/7.jpeg",
+    image: "/images/8.jpeg",
   },
   {
     id: 7,
