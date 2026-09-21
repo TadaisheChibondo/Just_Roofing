@@ -18,14 +18,14 @@ export const catalogData = [
     name: "Boxed Mesh",
     specification: "50x50 ",
     price: "$5/ m",
-    image: "/images/4.jpeg",
+    image: "/images/14.jpeg",
   },
   {
     id: 5,
     name: "Game Fence",
     specification: "1.5mx100m",
     price: "$85.00",
-    image: "/images/8.jpeg",
+    image: "/images/4.jpeg",
   },
   {
     id: 6,
@@ -114,14 +114,14 @@ export const catalogData = [
     name: "Corrugated Galv",
     specification: "3.5m",
     price: "6",
-    image: "/images/18.jpeg",
+    image: "/images/19.jpeg",
   },
   {
     id: 18,
     name: "ibr",
     specification: "0.3mm",
     price: "12 or 4 per m",
-    image: "/images/19.jpeg",
+    image: "/images/18.jpeg",
   },
   {
     id: 20,
