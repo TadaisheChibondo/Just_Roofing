@@ -139,7 +139,15 @@ function AppShell() {
             Supplying Quality Roofing Materials Across Zimbabwe
           </p>
           <p className="text-sm mt-4 text-gray-500">
-            &copy; 2026 All rights reserved.
+            &copy; 2026 All rights reserved | Developed by{" "}
+            <a
+              href="https://tadaishechibondo.co.zw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-gray-300"
+            >
+              Tadaishe Chibondo
+            </a>
           </p>
         </footer>
       </div>
